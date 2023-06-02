@@ -12,6 +12,9 @@ app.use(express.urlencoded({ extended: true }))
 // all of the Application Route
 app.use('/api/v1/users', router)
 
+// test the development
+console.log(process.env)
+
 // testing route
 app.get('/', async (req: Request, res: Response) => {
   // await userService.createUser({
