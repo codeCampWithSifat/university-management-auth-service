@@ -2,10 +2,15 @@ import { ErrorRequestHandler } from 'express'
 import config from '../../config'
 import { IGenericErrorMessage } from '../../interfaces/error'
 import { handleValidationError } from '../../errors/handleValidationError'
-// import { error } from 'winston';
 import ApiError from '../../errors/ApiError'
+import { errorLogger } from '../../share/logger'
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
+  //
+  config.env === 'development'
+    ? console.log(`GlobalError`, error)
+    : errorLogger.error('Global Error Handler', error)
+
   let statusCode = 500
   let message = 'Something Went Wrong'
   let errorMessages: IGenericErrorMessage[] = []
