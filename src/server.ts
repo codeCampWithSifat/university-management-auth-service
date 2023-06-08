@@ -1,43 +1,44 @@
-import mongoose from 'mongoose'
-import config from './config/index'
-import app from './app'
-import { logger, errorLogger } from './share/logger'
-import { Server } from 'http'
+import mongoose from 'mongoose';
+import config from './config/index';
+import app from './app';
+import { logger, errorLogger } from './share/logger';
+import { Server } from 'http';
 
 process.on('uncaughtException', error => {
-  errorLogger.error(error)
-  process.exit(1)
-})
+  // console.log('UnCaught Exception Is Detected');
+  errorLogger.error(error);
+  process.exit(1);
+});
 
-let server: Server
+let server: Server;
 async function main() {
   try {
-    await mongoose.connect(config.database_url as string)
+    await mongoose.connect(config.database_url as string);
     server = app.listen(config.port, () => {
-      logger.info(`Application Listening on port ${config.port}`)
-    })
-    logger.info('Database connected Successfully')
+      logger.info(`Application Listening on port ${config.port}`);
+    });
+    logger.info('Database connected Successfully');
   } catch (err) {
-    errorLogger.error('Database Error', err)
+    errorLogger.error('Database Error', err);
   }
 
   process.on('unhandledRejection', error => {
-    console.log('Unhandled Rejection Is Detected')
+    // console.log('Unhandled Rejection Is Detected');
     if (server) {
       server.close(() => {
-        errorLogger.error(error)
-        process.exit(1)
-      })
+        errorLogger.error(error);
+        process.exit(1);
+      });
     } else {
-      process.exit(1)
+      process.exit(1);
     }
-  })
+  });
 }
-main()
+main();
 
 process.on('SIGTERM', () => {
-  logger.info('SIGTREM is received')
+  logger.info('SIGTREM is received');
   if (server) {
-    server.close()
+    server.close();
   }
-})
+});
