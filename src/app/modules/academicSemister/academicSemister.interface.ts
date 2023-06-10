@@ -20,10 +20,14 @@ export type IAcademicSemeterCodes = '01' | '02' | '03';
 
 export type IAcademisSemister = {
   title: IAcademicSemeterTitles;
-  year: number;
+  year: string;
   code: IAcademicSemeterCodes;
   startMonth: IAcademicSemesterMonth;
   endMonth: IAcademicSemesterMonth;
 };
 
 export type AcademicSemesterModel = Model<IAcademisSemister>;
+
+export type IAcademicSemesterFilter = {
+  searchTerm: string;
+};
